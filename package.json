@@ -1,6 +1,6 @@
 {
-  "name": "manifest-loader",
-  "version": "0.0.1",
+  "name": "manifest-glob-loader",
+  "version": "0.0.2",
   "description": "A webpack loader to generate dynamic asset manifests for static assets (images, sounds, videos) for passing into a preloading system ",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/RinconStrategies/manifest-loader.git"
+    "url": "https://github.com/colepatrickturner/manifest-glob-loader.git"
   },
   "keywords": [
     "webpack",
@@ -16,14 +16,20 @@
     "preloading"
   ],
   "author": "Charles King",
+  "contributors": [
+    "Cole Turner <turner.cole@gmail.com> (http://cole.codes/)"
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/RinconStrategies/manifest-loader/issues"
+    "url": "https://github.com/colepatrickturner/manifest-glob-loader/issues"
   },
-  "homepage": "https://github.com/RinconStrategies/manifest-loader",
+  "homepage": "https://github.com/colepatrickturner/manifest-glob-loader",
   "peerDependencies": {
     "loader-utils": "^0.2.11",
-    "recursive-readdir": "^1.2.1",
+    "glob": "^7.1.1",
     "lodash.assign": "^3.2.0"
+  },
+  "dependencies": {
+    "path": "^0.12.7"
   }
 }

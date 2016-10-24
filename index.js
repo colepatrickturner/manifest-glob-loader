@@ -1,4 +1,5 @@
-var recursive = require('recursive-readdir');
+var glob = require('glob');
+var path = require('path');
 var loaderUtils = require("loader-utils");
 var assign = require("lodash.assign");
 /**
@@ -20,28 +21,48 @@ module.exports = function( source ) {
         config = assign(config, this.options[configKey]);
     }
 
-    //add a dep to that path
-    this.addDependency(config.assetsPath);
+    var options = config.globOptions || {};
+    var addDependency = this.addContextDependency;
 
     //read the files
-    recursive(config.assetsPath, config.ignore, function( err, files ) {
+    glob(config.globPattern, options, function( err, files ) {
 
         //return the error
         if ( err ) {
             callback(err);
         }
 
-        var output;
-        //rewrite the paths to be relative
-        if ( config.rewritePath ) {
-            output = files.map(function( f ) {
-                return f.slice(f.indexOf(config.rewritePath), f.length);
-            });
-        } else {
-            output = files;
+        var dependencies = files.map(function(f) {
+            return ('cwd' in options ? options.cwd : process.cwd()) + path.dirname(f);
+        }).sort(function(a, b) { return a.length < b.length ? -1 : 1; });
+
+        var baseDependencies = [];
+        for(var i=0;i<dependencies.length;i++) {
+          var dependency = dependencies[i];
+          var dependencyRoot = dependency;
+
+          while(dependencyRoot != path.dirname(dependencyRoot)) {
+            dependencyRoot = path.dirname(dependencyRoot);
+
+            if (dependencies.indexOf(dependencyRoot) !== -1) {
+              if(baseDependencies.indexOf(dependencyRoot) === -1) {
+                baseDependencies.push(dependencyRoot);
+              }
+
+              break;
+            }
+          }
+
+          if(dependencyRoot === path.dirname(dependencyRoot) && baseDependencies.indexOf(dependency) === -1) {
+            baseDependencies.push(dependency);
+          }
+        }
+
+        for(var i=0;i<baseDependencies.length;i++) {
+          addDependency(baseDependencies[i]);
         }
 
         //return
-        callback(null, output);
+        callback(null, files);
     });
 };

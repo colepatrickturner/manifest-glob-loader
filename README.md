@@ -1,5 +1,8 @@
-# manifest-loader
-A webpack loader to generate dynamic asset manifests for static assets (images, sounds, videos) for passing into a preloading system 
+# manifest-glob-loader
+A webpack loader to generate dynamic asset manifests for static assets (images, sounds, videos) for passing into a preloading system
+
+# Differences from `manifest-loader`
+This loader uses `glob` instead of `recursive-readdir` because I wanted to tap into the options such as `cwd` which lets you return relative paths more configurable.
 
 #installation
 ``` npm install manifest-loader ```
@@ -14,21 +17,19 @@ Define a block in your webpack config that specifies the following options, give
             client: [jsSrc + "client.js"]
         },
         images: {
-            assetsPath: __dirname + '/../../app/assets/images',
-            rewritePath: "assets/images/",
-            ignore: ['.DS_Store']
+            globPattern: 'images/**/*',
+            globOptions: {
+              cwd: __dirname + '/../../app/assets/
+            }
         },
      }
 ```
 
-## assetsPath
-The absolute path to your static asstets
+## globPattern
+The pattern to match your static assets
 
-## rewritePath (optional)
-Optionally rewrite the path to make it relative (import for a runtime asset loader like preloadJS)
-
-## ignore
-A blob of matching files to ignore
+## globOptions (optional)
+Options to send to `glob`
 
 #usage
 
@@ -71,15 +72,14 @@ The resulting module is an array of relative file paths-
 ```JavaScript
 
 	module.exports = [
-		"assets/images/android-icon-144x144.png",
-		"assets/images/android-icon-192x192.png",
-		"assets/images/android-icon-36x36.png",
-		"assets/images/android-icon-48x48.png",
-		"assets/images/android-icon-72x72.png",
-		"assets/images/android-icon-96x96.png",
-		"assets/images/apple-icon-114x114.png",
-		"assets/images/apple-icon-120x120.png",
-		"assets/images/apple-icon-144x144.png",
-		"assets/images/apple-icon-152x152.png"];
+		"images/android-icon-144x144.png",
+		"images/android-icon-192x192.png",
+		"images/android-icon-36x36.png",
+		"images/android-icon-48x48.png",
+		"images/android-icon-72x72.png",
+		"images/android-icon-96x96.png",
+		"images/apple-icon-114x114.png",
+		"images/apple-icon-120x120.png",
+		"images/apple-icon-144x144.png",
+		"images/apple-icon-152x152.png"];
 ```
-
