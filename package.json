@@ -1,6 +1,6 @@
 {
   "name": "manifest-glob-loader",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A webpack loader to generate dynamic asset manifests for static assets (images, sounds, videos) for passing into a preloading system ",
   "main": "index.js",
   "scripts": {
@@ -27,9 +27,7 @@
   "peerDependencies": {
     "loader-utils": "^0.2.11",
     "glob": "^7.1.1",
-    "lodash.assign": "^3.2.0"
-  },
-  "dependencies": {
+    "lodash.assign": "^3.2.0",
     "path": "^0.12.7"
   }
 }
